@@ -1,1 +1,1 @@
-module.exports = require('./lib/AttachEvent').default;
+module.exports = require('./lib/AttachHandler').default;
