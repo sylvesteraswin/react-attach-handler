@@ -116,7 +116,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof superClass !== "function" && superClass !== null) {
 	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof2(superClass)));
 	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	}
+	} //eslint-disable-line no-unused-vars
+
 
 	var defaultEventOptions = {
 	    capture: false,
@@ -204,7 +205,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }, _this.addEventListener = function () {
 	            _this.setListeners(switchOn);
 	        }, _this.removeEventListener = function () {
-	            _this.setListeners(switchOnOff);
+	            _this.setListeners(switchOff);
 	        }, _this.setListeners = function (switchOnOff) {
 	            var _this$props = _this.props,
 	                target = _this$props.target,

@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from 'react'; //eslint-disable-line no-unused-vars
 import shallowCompare from 'react-addons-shallow-compare';
 import * as helpers from './helpers';
 
@@ -11,7 +11,7 @@ const defaultEventOptions = {
 const {
     addEventListener,
     removeEventListener,
-    passiveOptions
+    passiveOptions,
 } = helpers;
 
 const mergeOptionsWithDefault = (obj) => {
@@ -107,7 +107,7 @@ class AttachHandler extends Component {
     };
 
     removeEventListener = () => {
-        this.setListeners(switchOnOff);
+        this.setListeners(switchOff);
     };
 
     setListeners = (switchOnOff) => {
