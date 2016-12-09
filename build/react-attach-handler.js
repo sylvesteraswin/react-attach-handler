@@ -120,7 +120,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	var defaultEventOptions = {
 	    capture: false,
-	    passive: false
+	    passive: false,
+	    debounce: false
 	};
 
 	var addEventListener = helpers.addEventListener,
@@ -264,7 +265,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // The Component will take one child
 	    children: _react.PropTypes.element,
 	    // DOM target to listen to
-	    target: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string])
+	    target: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]).isRequired,
+	    events: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.func]).isRequired
 	};
 	exports.default = AttachHandler;
 
