@@ -13,9 +13,14 @@ class App extends Component {
             <section
                 className="app">
                 <AttachHandler
-                    target={window}
+                    target="window"
                     events={{
-                        resize: this.handleMouseMove,
+                        resize: {
+                            handler: this.handleMouseMove,
+                            opts: {
+                                debounce: true,
+                            }
+                        },
                     }}
                     />
             </section>

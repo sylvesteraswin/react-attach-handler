@@ -4,7 +4,7 @@ import * as helpers from './helpers';
 
 const defaultEventOptions = {
     capture: false,
-    passive: false
+    passive: false,
 };
 
 const {addEventListener, removeEventListener, passiveOptions} = helpers;
@@ -22,27 +22,29 @@ const getEvents = (eventName, cb, opts) => {
 };
 
 // Inspired from http://davidwalsh.name/javascript-debounce-function
-const debounce = (cb, delay) => {
+const debounceFn = function(cb, delay){
     let timeout;
 
     return function(){
-        let context = this;
-        let args = arguments;
+        const context = this;
+        const args = arguments;
 
         clearTimeout(timeout);
-        timeout = setTimeoue(function(){
+        timeout = setTimeout(function(){
             cb.apply(context, args);
         }, delay);
     };
 };
 
 const switchOn = (target, eventName, cb, opts) => {
-    console.log(arguments);
     // Only supports modern browsers
     // Sorry IE10- users
     if (addEventListener) {
+        const {
+            debounce = false,
+        } = opts;
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target.addEventListener.apply(target, getEvents(eventName, cb, opts));
+        target.addEventListener.apply(target, getEvents(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
     }
 };
 
@@ -60,7 +62,10 @@ class AttachHandler extends Component {
         // The Component will take one child
         children: PropTypes.element,
         // DOM target to listen to
-        target: PropTypes.oneOfType([PropTypes.object, PropTypes.string])
+        target: PropTypes.oneOfType([
+            PropTypes.object,
+            PropTypes.string,
+        ]),
     };
 
     state = {};
@@ -72,7 +77,7 @@ class AttachHandler extends Component {
     shouldComponentUpdate = (nextProps) => {
         return shallowCompare({
             props: this.props,
-            state: this.state
+            state: this.state,
         }, nextProps, this.state);
     };
 
@@ -111,23 +116,30 @@ class AttachHandler extends Component {
                 const isFunction = valueType === 'function';
 
                 // This check is to make sure we have the right typeof value
-                if (!isObject && !isFunction)
-                    return;
+                if (!isObject && !isFunction) { return; }
                 let eventHandler,
                     options;
 
                 if (isObject) {
-                    let {
-                        handler: eventHandler = null,
-                        opts: options = {}
+
+                    const {
+                        handler = null,
+                        opts = {},
                     } = value;
+
+                    if (handler) {
+                        eventHandler = handler;
+                    }
+                    if (opts) {
+                        options = mergeOptionsWithDefault(opts);
+                    }
                 } else {
-                    handler = value;
+                    eventHandler = value;
                 }
 
-                switchOnOff(target, event, handler, mergeOptionsWithDefault(options
-                    ? options
-                    : {}));
+                if (eventHandler) {
+                    switchOnOff(element, event, eventHandler, options);
+                }
             });
         }
     };

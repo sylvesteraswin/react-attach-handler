@@ -72,8 +72,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
 	};
 
-	var _arguments = arguments;
-
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -140,7 +138,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	// Inspired from http://davidwalsh.name/javascript-debounce-function
-	var debounce = function debounce(cb, delay) {
+	var debounceFn = function debounceFn(cb, delay) {
 	    var timeout = void 0;
 
 	    return function () {
@@ -148,19 +146,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var args = arguments;
 
 	        clearTimeout(timeout);
-	        timeout = setTimeoue(function () {
+	        timeout = setTimeout(function () {
 	            cb.apply(context, args);
 	        }, delay);
 	    };
 	};
 
 	var switchOn = function switchOn(target, eventName, cb, opts) {
-	    console.log(_arguments);
 	    // Only supports modern browsers
 	    // Sorry IE10- users
 	    if (addEventListener) {
+	        var _opts$debounce = opts.debounce,
+	            debounce = _opts$debounce === undefined ? false : _opts$debounce;
 	        // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-	        target.addEventListener.apply(target, getEvents(eventName, cb, opts));
+
+	        target.addEventListener.apply(target, getEvents(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
 	    }
 	};
 
@@ -208,34 +208,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	                events = _this$props.events;
 
 	            if (target) {
-	                var element = void 0;
+	                (function () {
+	                    var element = void 0;
 
-	                if (typeof target === 'string') {
-	                    element = window[target];
-	                }
-
-	                Object.keys(events).forEach(function (event) {
-	                    var value = events[event];
-	                    var valueType = typeof value === 'undefined' ? 'undefined' : _typeof(value);
-	                    var isObject = valueType === 'object';
-	                    var isFunction = valueType === 'function';
-
-	                    // This check is to make sure we have the right typeof value
-	                    if (!isObject && !isFunction) return;
-	                    var eventHandler = void 0,
-	                        options = void 0;
-
-	                    if (isObject) {
-	                        var _value$handler = value.handler,
-	                            _eventHandler = _value$handler === undefined ? null : _value$handler,
-	                            _value$opts = value.opts,
-	                            _options = _value$opts === undefined ? {} : _value$opts;
-	                    } else {
-	                        handler = value;
+	                    if (typeof target === 'string') {
+	                        element = window[target];
 	                    }
 
-	                    switchOnOff(target, event, handler, mergeOptionsWithDefault(options ? options : {}));
-	                });
+	                    Object.keys(events).forEach(function (event) {
+	                        var value = events[event];
+	                        var valueType = typeof value === 'undefined' ? 'undefined' : _typeof(value);
+	                        var isObject = valueType === 'object';
+	                        var isFunction = valueType === 'function';
+
+	                        // This check is to make sure we have the right typeof value
+	                        if (!isObject && !isFunction) {
+	                            return;
+	                        }
+	                        var eventHandler = void 0,
+	                            options = void 0;
+
+	                        if (isObject) {
+	                            var _value$handler = value.handler,
+	                                handler = _value$handler === undefined ? null : _value$handler,
+	                                _value$opts = value.opts,
+	                                opts = _value$opts === undefined ? {} : _value$opts;
+
+	                            if (handler) {
+	                                eventHandler = handler;
+	                            }
+	                            if (opts) {
+	                                options = mergeOptionsWithDefault(opts);
+	                            }
+	                        } else {
+	                            eventHandler = value;
+	                        }
+
+	                        if (eventHandler) {
+	                            switchOnOff(element, event, eventHandler, options);
+	                        }
+	                    });
+	                })();
 	            }
 	        }, _this.render = function () {
 	            return _this.props.children || null;
