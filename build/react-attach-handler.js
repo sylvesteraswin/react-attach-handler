@@ -131,7 +131,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return Object.assign({}, defaultEventOptions, obj);
 	};
 
-	var getEvents = function getEvents(eventName, cb, opts) {
+	var getEventsArgs = function getEventsArgs(eventName, cb, opts) {
 	    var args = [eventName, cb];
 	    args.push(passiveOptions ? opts : opts.capture);
 	    return args;
@@ -160,7 +160,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            debounce = _opts$debounce === undefined ? false : _opts$debounce;
 	        // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
 
-	        target.addEventListener.apply(target, getEvents(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
+	        target.addEventListener.apply(target, getEventsArgs(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
 	    }
 	};
 
@@ -169,7 +169,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    // Sorry IE10- users
 	    if (removeEventListener) {
 	        // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-	        target.removeEventListener.apply(target, getEvents(eventName, cb, opts));
+	        target.removeEventListener.apply(target, getEventsArgs(eventName, cb, opts));
 	    }
 	};
 
@@ -202,7 +202,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	            _this.removeEventListener();
 	        }, _this.addEventListener = function () {
 	            _this.setListeners(switchOn);
-	        }, _this.removeEventListener = function () {}, _this.setListeners = function (switchOnOff) {
+	        }, _this.removeEventListener = function () {
+	            _this.setListeners(switchOnOff);
+	        }, _this.setListeners = function (switchOnOff) {
 	            var _this$props = _this.props,
 	                target = _this$props.target,
 	                events = _this$props.events;

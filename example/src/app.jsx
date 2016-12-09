@@ -5,8 +5,10 @@ import AttachHandler from '../../lib/AttachHandler';
 
 class App extends Component {
     handleMouseMove = () => {
-        console.log('mousemove');
+        console.log(`mousemove ${this.iamhere} Hello`);
     };
+
+    iamhere = 'Something is here';
 
     render = () => {
         return (

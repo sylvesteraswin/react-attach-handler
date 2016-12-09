@@ -1,19 +1,24 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import shallowCompare from 'react-addons-shallow-compare';
 import * as helpers from './helpers';
 
 const defaultEventOptions = {
     capture: false,
     passive: false,
+    debounce: false,
 };
 
-const {addEventListener, removeEventListener, passiveOptions} = helpers;
+const {
+    addEventListener,
+    removeEventListener,
+    passiveOptions
+} = helpers;
 
 const mergeOptionsWithDefault = (obj) => {
     return Object.assign({}, defaultEventOptions, obj);
 };
 
-const getEvents = (eventName, cb, opts) => {
+const getEventsArgs = (eventName, cb, opts) => {
     const args = [eventName, cb];
     args.push(passiveOptions
         ? opts
@@ -44,7 +49,7 @@ const switchOn = (target, eventName, cb, opts) => {
             debounce = false,
         } = opts;
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target.addEventListener.apply(target, getEvents(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
+        target.addEventListener.apply(target, getEventsArgs(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
     }
 };
 
@@ -53,7 +58,7 @@ const switchOff = (target, eventName, cb, opts) => {
     // Sorry IE10- users
     if (removeEventListener) {
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target.removeEventListener.apply(target, getEvents(eventName, cb, opts));
+        target.removeEventListener.apply(target, getEventsArgs(eventName, cb, opts));
     }
 };
 
@@ -65,7 +70,11 @@ class AttachHandler extends Component {
         target: PropTypes.oneOfType([
             PropTypes.object,
             PropTypes.string,
-        ]),
+        ]).isRequired,
+        events: PropTypes.oneOfType([
+            PropTypes.object,
+            PropTypes.func,
+        ]).isRequired,
     };
 
     state = {};
@@ -97,7 +106,9 @@ class AttachHandler extends Component {
         this.setListeners(switchOn);
     };
 
-    removeEventListener = () => {};
+    removeEventListener = () => {
+        this.setListeners(switchOnOff);
+    };
 
     setListeners = (switchOnOff) => {
         const {target, events} = this.props;
