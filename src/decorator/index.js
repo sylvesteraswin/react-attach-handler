@@ -17,7 +17,7 @@ const _classWrapper = (WrapperComponent, events = {}) => {
 const _decorator = (...args) => {
     console.log(...args);
     // return (wrapper) => {
-    //     // return _classWrapper(wrapper, ...args)
+        // return _classWrapper(wrapper, ...args)
     // };
 };
 

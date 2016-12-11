@@ -362,7 +362,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    (_console = console).log.apply(_console, arguments);
 	    // return (wrapper) => {
-	    //     // return _classWrapper(wrapper, ...args)
+	    // return _classWrapper(wrapper, ...args)
 	    // };
 	};
 
