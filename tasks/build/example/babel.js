@@ -7,17 +7,21 @@ import source from 'vinyl-source-stream';
 import livereload from 'gulp-livereload';
 
 module.exports = () => {
-  return browserify({
-      entries: './example/src/app.jsx',
-      extensions: ['.jsx'],
-      debug: true,
-    })
-    .transform('babelify', {
-        presets: ['es2015', 'react', 'stage-1'],
-    })
-    .bundle()
-    .pipe(source('app.js'))
-    .pipe(buffer())
-    .pipe(gulp.dest('./example/'))
-    .pipe(livereload());
+    return browserify({
+            entries: './example/src/app.jsx',
+            extensions: ['.jsx'],
+            debug: true,
+        })
+        .transform('babelify', {
+            presets: ['es2015', 'react', 'stage-1'],
+            plugins: [
+                "transform-remove-strict-mode",
+                "transform-decorators-legacy"
+            ]
+        })
+        .bundle()
+        .pipe(source('app.js'))
+        .pipe(buffer())
+        .pipe(gulp.dest('./example/'))
+        .pipe(livereload());
 };

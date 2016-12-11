@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import AttachHandler from '../../lib/AttachHandler';
+import AttachHandler, { attachHandler } from '../../lib/AttachHandler';
 
 class App extends Component {
     handleMouseMove = () => {
@@ -31,4 +31,25 @@ class App extends Component {
     }
 }
 
-ReactDOM.render(<App />, document.getElementById('container'));
+const eventHandler = {
+    resize: {
+        handler: () => {},
+        opts: {
+            debounce: true,
+        }
+    },
+};
+
+@attachHandler
+class AppNew extends Component {
+    render = () => {
+        return (
+            <section
+                className="appnew">
+                {this.props.title} World!
+            </section>
+        );
+    };
+}
+
+ReactDOM.render(<AppNew title={"Hello"} />, document.getElementById('container'));

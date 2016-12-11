@@ -86,7 +86,7 @@ class AttachHandler extends Component {
     shouldComponentUpdate = (nextProps) => {
         return shallowCompare({
             props: this.props,
-            state: this.state
+            state: this.state,
         }, nextProps, this.state);
     };
 
@@ -139,7 +139,7 @@ class AttachHandler extends Component {
 
                         const {
                             handler = null,
-                            opts = {}
+                            opts = {},
                         } = value;
 
                         if (handler) {
@@ -165,3 +165,4 @@ class AttachHandler extends Component {
 }
 
 export default AttachHandler;
+export { default as attachHandler } from './decorator';

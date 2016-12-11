@@ -7,7 +7,7 @@
 		exports["AttachHandler"] = factory(require("react"));
 	else
 		root["AttachHandler"] = factory(root["React"]);
-})(this, function(__WEBPACK_EXTERNAL_MODULE_2__) {
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -65,6 +65,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
+	exports.attachHandler = undefined;
 
 	var _typeof = typeof Symbol === "function" && _typeof2(Symbol.iterator) === "symbol" ? function (obj) {
 	    return typeof obj === "undefined" ? "undefined" : _typeof2(obj);
@@ -75,15 +76,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	var _class, _temp2; //eslint-disable-line no-unused-vars
 
 
-	var _react = __webpack_require__(2);
+	var _decorator = __webpack_require__(2);
+
+	Object.defineProperty(exports, 'attachHandler', {
+	    enumerable: true,
+	    get: function get() {
+	        return _interopRequireDefault(_decorator).default;
+	    }
+	});
+
+	var _react = __webpack_require__(3);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactAddonsShallowCompare = __webpack_require__(3);
+	var _reactAddonsShallowCompare = __webpack_require__(4);
 
 	var _reactAddonsShallowCompare2 = _interopRequireDefault(_reactAddonsShallowCompare);
 
-	var _helpers = __webpack_require__(6);
+	var _helpers = __webpack_require__(7);
 
 	var helpers = _interopRequireWildcard(_helpers);
 
@@ -273,18 +283,109 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __WEBPACK_EXTERNAL_MODULE_2__;
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) {
+	    for (var i = 1; i < arguments.length; i++) {
+	        var source = arguments[i];for (var key in source) {
+	            if (Object.prototype.hasOwnProperty.call(source, key)) {
+	                target[key] = source[key];
+	            }
+	        }
+	    }return target;
+	};
+
+	var _AttachHandler2 = __webpack_require__(1);
+
+	var _AttachHandler3 = _interopRequireDefault(_AttachHandler2);
+
+	function _interopRequireDefault(obj) {
+	    return obj && obj.__esModule ? obj : { default: obj };
+	}
+
+	function _classCallCheck(instance, Constructor) {
+	    if (!(instance instanceof Constructor)) {
+	        throw new TypeError("Cannot call a class as a function");
+	    }
+	}
+
+	function _possibleConstructorReturn(self, call) {
+	    if (!self) {
+	        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	    }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+	}
+
+	function _inherits(subClass, superClass) {
+	    if (typeof superClass !== "function" && superClass !== null) {
+	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+	}
+
+	var _classWrapper = function _classWrapper(WrapperComponent) {
+	    var events = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+	    // console.log('classwrapper', events);
+	    return function (_AttachHandler) {
+	        _inherits(AttachHandlerDecorator, _AttachHandler);
+
+	        function AttachHandlerDecorator() {
+	            var _ref;
+
+	            var _temp, _this, _ret;
+
+	            _classCallCheck(this, AttachHandlerDecorator);
+
+	            for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	                args[_key] = arguments[_key];
+	            }
+
+	            return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AttachHandlerDecorator.__proto__ || Object.getPrototypeOf(AttachHandlerDecorator)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidMount = function () {
+	                console.log('Loading from decorator');
+	            }, _this.render = function () {
+	                console.log(events);
+	                return React.createElement(WrapperComponent, _extends({}, _this.props, { events: events }));
+	            }, _temp), _possibleConstructorReturn(_this, _ret);
+	        }
+
+	        return AttachHandlerDecorator;
+	    }(_AttachHandler3.default);
+	};
+
+	var _decorator = function _decorator() {
+	    var _console;
+
+	    (_console = console).log.apply(_console, arguments);
+	    // return (wrapper) => {
+	    //     // return _classWrapper(wrapper, ...args)
+	    // };
+	};
+
+	var attachHandler = function attachHandler() {
+	    return _decorator.apply(undefined, arguments);
+	};
+
+	exports.default = attachHandler;
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	module.exports = __webpack_require__(4);
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
 
 /***/ },
 /* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(5);
+
+/***/ },
+/* 5 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -299,7 +400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	'use strict';
 
-	var shallowEqual = __webpack_require__(5);
+	var shallowEqual = __webpack_require__(6);
 
 	/**
 	 * Does a shallow comparison for props and state.
@@ -313,7 +414,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = shallowCompare;
 
 /***/ },
-/* 5 */
+/* 6 */
 /***/ function(module, exports) {
 
 	/**
@@ -385,7 +486,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	module.exports = shallowEqual;
 
 /***/ },
-/* 6 */
+/* 7 */
 /***/ function(module, exports) {
 
 	Object.defineProperty(exports, "__esModule", {
