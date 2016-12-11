@@ -33,9 +33,6 @@ const webpackConfig = {
       test: /\.(js|jsx)$/,
       exclude: /(node_modules)/,
       loader: 'babel-loader'
-    }, {
-      test: /\.(scss|css)$/,
-      loader: ExtractTextPlugin.extract("style-loader", "css-loader")
     }]
   },
   resolve: {
@@ -57,8 +54,7 @@ const webpackConfig = {
         comments: false
       }
     })*/,
-    new webpack.optimize.DedupePlugin(),
-    new ExtractTextPlugin("react-gallery-swiper.css", {allChunks: false})
+    new webpack.optimize.DedupePlugin()
   ]
 };
 

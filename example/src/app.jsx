@@ -21,6 +21,7 @@ class App extends Component {
                             handler: this.handleMouseMove,
                             opts: {
                                 debounce: true,
+                                debounceDelay: 100,
                             }
                         },
                     }}

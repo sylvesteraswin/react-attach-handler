@@ -72,6 +72,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
 	};
 
+	var _class, _temp2; //eslint-disable-line no-unused-vars
+
+
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -116,13 +119,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof superClass !== "function" && superClass !== null) {
 	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof2(superClass)));
 	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	} //eslint-disable-line no-unused-vars
-
+	}
 
 	var defaultEventOptions = {
 	    capture: false,
 	    passive: false,
-	    debounce: false
+	    debounce: false,
+	    debounceDelay: 250
 	};
 
 	var addEventListener = helpers.addEventListener,
@@ -155,27 +158,26 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	var switchOn = function switchOn(target, eventName, cb, opts) {
-	    // Only supports modern browsers
-	    // Sorry IE10- users
+	    // Only supports modern browsers Sorry IE10- users
 	    if (addEventListener) {
 	        var _opts$debounce = opts.debounce,
-	            debounce = _opts$debounce === undefined ? false : _opts$debounce;
+	            debounce = _opts$debounce === undefined ? false : _opts$debounce,
+	            debounceDelay = opts.debounceDelay;
 	        // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
 
-	        target.addEventListener.apply(target, getEventsArgs(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
+	        target.addEventListener.apply(target, getEventsArgs(eventName, debounce ? debounceFn(cb, debounceDelay) : cb, opts));
 	    }
 	};
 
 	var switchOff = function switchOff(target, eventName, cb, opts) {
-	    // Only supports modern browsers
-	    // Sorry IE10- users
+	    // Only supports modern browsers Sorry IE10- users
 	    if (removeEventListener) {
 	        // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
 	        target.removeEventListener.apply(target, getEventsArgs(eventName, cb, opts));
 	    }
 	};
 
-	var AttachHandler = function (_Component) {
+	var AttachHandler = (_temp2 = _class = function (_Component) {
 	    _inherits(AttachHandler, _Component);
 
 	    function AttachHandler() {
@@ -260,15 +262,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    return AttachHandler;
-	}(_react.Component);
-
-	AttachHandler.propTypes = {
+	}(_react.Component), _class.propTypes = {
 	    // The Component will take one child
 	    children: _react.PropTypes.element,
 	    // DOM target to listen to
 	    target: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]).isRequired,
 	    events: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.func]).isRequired
-	};
+	}, _temp2);
 	exports.default = AttachHandler;
 
 /***/ },

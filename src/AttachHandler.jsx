@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'; //eslint-disable-line no-unused-vars
+import React, {Component, PropTypes} from 'react'; //eslint-disable-line no-unused-vars
 import shallowCompare from 'react-addons-shallow-compare';
 import * as helpers from './helpers';
 
@@ -6,13 +6,10 @@ const defaultEventOptions = {
     capture: false,
     passive: false,
     debounce: false,
+    debounceDelay: 250,
 };
 
-const {
-    addEventListener,
-    removeEventListener,
-    passiveOptions,
-} = helpers;
+const {addEventListener, removeEventListener, passiveOptions} = helpers;
 
 const mergeOptionsWithDefault = (obj) => {
     return Object.assign({}, defaultEventOptions, obj);
@@ -27,38 +24,43 @@ const getEventsArgs = (eventName, cb, opts) => {
 };
 
 // Inspired from http://davidwalsh.name/javascript-debounce-function
-const debounceFn = function(cb, delay){
+const debounceFn = function (cb, delay) {
     let timeout;
 
-    return function(){
+    return function () {
         const context = this;
         const args = arguments;
 
         clearTimeout(timeout);
-        timeout = setTimeout(function(){
+        timeout = setTimeout(function () {
             cb.apply(context, args);
         }, delay);
     };
 };
 
 const switchOn = (target, eventName, cb, opts) => {
-    // Only supports modern browsers
-    // Sorry IE10- users
+    // Only supports modern browsers Sorry IE10- users
     if (addEventListener) {
         const {
             debounce = false,
+            debounceDelay,
         } = opts;
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target.addEventListener.apply(target, getEventsArgs(eventName, debounce ? debounceFn(cb, 250) : cb, opts));
+        target
+            .addEventListener
+            .apply(target, getEventsArgs(eventName, debounce
+                ? debounceFn(cb, debounceDelay)
+                : cb, opts));
     }
 };
 
 const switchOff = (target, eventName, cb, opts) => {
-    // Only supports modern browsers
-    // Sorry IE10- users
+    // Only supports modern browsers Sorry IE10- users
     if (removeEventListener) {
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target.removeEventListener.apply(target, getEventsArgs(eventName, cb, opts));
+        target
+            .removeEventListener
+            .apply(target, getEventsArgs(eventName, cb, opts));
     }
 };
 
@@ -67,14 +69,12 @@ class AttachHandler extends Component {
         // The Component will take one child
         children: PropTypes.element,
         // DOM target to listen to
-        target: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.string,
-        ]).isRequired,
-        events: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.func,
-        ]).isRequired,
+        target: PropTypes
+            .oneOfType([PropTypes.object, PropTypes.string])
+            .isRequired,
+        events: PropTypes
+            .oneOfType([PropTypes.object, PropTypes.func])
+            .isRequired,
     };
 
     state = {};
@@ -86,7 +86,7 @@ class AttachHandler extends Component {
     shouldComponentUpdate = (nextProps) => {
         return shallowCompare({
             props: this.props,
-            state: this.state,
+            state: this.state
         }, nextProps, this.state);
     };
 
@@ -120,38 +120,42 @@ class AttachHandler extends Component {
                 element = window[target];
             }
 
-            Object.keys(events).forEach((event) => {
-                const value = events[event];
-                const valueType = typeof value;
-                const isObject = valueType === 'object';
-                const isFunction = valueType === 'function';
+            Object
+                .keys(events)
+                .forEach((event) => {
+                    const value = events[event];
+                    const valueType = typeof value;
+                    const isObject = valueType === 'object';
+                    const isFunction = valueType === 'function';
 
-                // This check is to make sure we have the right typeof value
-                if (!isObject && !isFunction) { return; }
-                let eventHandler,
-                    options;
-
-                if (isObject) {
-
-                    const {
-                        handler = null,
-                        opts = {},
-                    } = value;
-
-                    if (handler) {
-                        eventHandler = handler;
+                    // This check is to make sure we have the right typeof value
+                    if (!isObject && !isFunction) {
+                        return;
                     }
-                    if (opts) {
-                        options = mergeOptionsWithDefault(opts);
-                    }
-                } else {
-                    eventHandler = value;
-                }
+                    let eventHandler,
+                        options;
 
-                if (eventHandler) {
-                    switchOnOff(element, event, eventHandler, options);
-                }
-            });
+                    if (isObject) {
+
+                        const {
+                            handler = null,
+                            opts = {}
+                        } = value;
+
+                        if (handler) {
+                            eventHandler = handler;
+                        }
+                        if (opts) {
+                            options = mergeOptionsWithDefault(opts);
+                        }
+                    } else {
+                        eventHandler = value;
+                    }
+
+                    if (eventHandler) {
+                        switchOnOff(element, event, eventHandler, options);
+                    }
+                });
         }
     };
 
