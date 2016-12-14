@@ -98,7 +98,7 @@ class AttachHandler extends Component {
         this.addEventListener();
     };
 
-    componentWillUnMount = () => {
+    componentWillUnmount = () => {
         this.removeEventListener();
     };
 
