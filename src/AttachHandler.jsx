@@ -38,7 +38,7 @@ const debounceFn = function (cb, delay) {
     };
 };
 
-const switchOn = (target, eventName, cb, opts) => {
+const switchOn = (target, eventName, cb, opts = {}) => {
     // Only supports modern browsers Sorry IE10- users
     if (addEventListener) {
         const {
@@ -54,7 +54,7 @@ const switchOn = (target, eventName, cb, opts) => {
     }
 };
 
-const switchOff = (target, eventName, cb, opts) => {
+const switchOff = (target, eventName, cb, opts = {}) => {
     // Only supports modern browsers Sorry IE10- users
     if (removeEventListener) {
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
@@ -86,7 +86,7 @@ class AttachHandler extends Component {
     shouldComponentUpdate = (nextProps) => {
         return shallowCompare({
             props: this.props,
-            state: this.state
+            state: this.state,
         }, nextProps, this.state);
     };
 
@@ -139,7 +139,7 @@ class AttachHandler extends Component {
 
                         const {
                             handler = null,
-                            opts = {}
+                            opts = {},
                         } = value;
 
                         if (handler) {

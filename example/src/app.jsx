@@ -4,7 +4,8 @@ import ReactDOM from 'react-dom';
 import AttachHandler from '../../lib/AttachHandler';
 
 class App extends Component {
-    handleMouseMove = () => {
+    handleMouseMove = (e) => {
+        console.log(e);
         console.log(`mousemove ${this.iamhere} Hello`);
     };
 
@@ -24,6 +25,7 @@ class App extends Component {
                                 debounceDelay: 100,
                             }
                         },
+                        scroll: this.handleMouseMove,
                     }}
                     />
             </section>

@@ -72,9 +72,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj === "undefined" ? "undefined" : _typeof2(obj);
 	};
 
-	var _class, _temp2; //eslint-disable-line no-unused-vars
-
-
 	var _react = __webpack_require__(2);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -119,7 +116,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (typeof superClass !== "function" && superClass !== null) {
 	        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof2(superClass)));
 	    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
-	}
+	} //eslint-disable-line no-unused-vars
+
 
 	var defaultEventOptions = {
 	    capture: false,
@@ -157,7 +155,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    };
 	};
 
-	var switchOn = function switchOn(target, eventName, cb, opts) {
+	var switchOn = function switchOn(target, eventName, cb) {
+	    var opts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
 	    // Only supports modern browsers Sorry IE10- users
 	    if (addEventListener) {
 	        var _opts$debounce = opts.debounce,
@@ -169,7 +169,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-	var switchOff = function switchOff(target, eventName, cb, opts) {
+	var switchOff = function switchOff(target, eventName, cb) {
+	    var opts = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
 	    // Only supports modern browsers Sorry IE10- users
 	    if (removeEventListener) {
 	        // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
@@ -177,7 +179,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	};
 
-	var AttachHandler = (_temp2 = _class = function (_Component) {
+	var AttachHandler = function (_Component) {
 	    _inherits(AttachHandler, _Component);
 
 	    function AttachHandler() {
@@ -262,13 +264,15 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 
 	    return AttachHandler;
-	}(_react.Component), _class.propTypes = {
+	}(_react.Component);
+
+	AttachHandler.propTypes = {
 	    // The Component will take one child
 	    children: _react.PropTypes.element,
 	    // DOM target to listen to
 	    target: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.string]).isRequired,
 	    events: _react.PropTypes.oneOfType([_react.PropTypes.object, _react.PropTypes.func]).isRequired
-	}, _temp2);
+	};
 	exports.default = AttachHandler;
 
 /***/ },

@@ -17,7 +17,7 @@ THis module provides a reactjs way to bind events to global `targets`. It uses n
 * `children`, Element, default `null`.
 * `target`, (required) String or Object, default `''`.
 * `events`, (required) Function or Object,
-    * If events its an Objet its accepts `capture`, `passive` & `debounce` as options.
+    * If events is an Object its accepts `capture`, `passive` & `debounce` as options.
 
 ## Usage
 [`example/src/app.jsx`](https://github.com/sylvesteraswin/react-attach-handler/tree/master/example/src)
