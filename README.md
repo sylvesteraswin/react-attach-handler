@@ -11,7 +11,7 @@ npm install react-attach-handler --save
 ```
 
 ## Why?
-THis module provides a reactjs way to bind events to global `targets`. It uses native React lifecycle to bind and unbind events.
+This module provides a reactjs way to bind events to global `targets`. It uses native React lifecycle to bind and unbind events.
 
 ## Props
 * `children`, Element, default `null`.
