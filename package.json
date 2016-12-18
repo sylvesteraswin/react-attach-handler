@@ -17,7 +17,7 @@
     "containerID": "container"
   },
   "scripts": {
-    "start": "NODE_ENV=production gulp",
+    "start": "webpack-dev-server",
     "test:lint": "eslint . --ext .js --ext .jsx --cache"
   },
   "repository": {
@@ -26,12 +26,13 @@
   },
   "keywords": [
     "react",
-    "carousel",
-    "react-carousel",
-    "react-component",
-    "react-gallery",
-    "react slideshow",
-    "react gallery"
+    "event handler",
+    "handler",
+    "addEventListener",
+    "removeEventListener",
+    "capture",
+    "passive",
+    "debounce"
   ],
   "author": "Sylvester Aswin",
   "license": "MIT",
@@ -46,12 +47,6 @@
     "babel-core": "^6.16.0",
     "babel-eslint": "^7.0.0",
     "babel-loader": "^6.2.5",
-    "babel-plugin-react-transform": "^2.0.2",
-    "babel-plugin-transform-remove-strict-mode": "0.0.2",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-react": "^6.16.0",
-    "babel-preset-stage-0": "^6.16.0",
-    "babel-preset-stage-1": "^6.16.0",
     "babel-preset-sylvester": "^0.1.0",
     "babel-register": "^6.16.3",
     "bootstrap": "^3.3.7",
