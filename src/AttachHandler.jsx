@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react'; //eslint-disable-line no-unused-vars
+import React, { Component, PropTypes } from 'react'; // eslint-disable-line no-unused-vars
 import shallowCompare from 'react-addons-shallow-compare';
 import * as helpers from './helpers';
 
@@ -9,11 +9,9 @@ const defaultEventOptions = {
     debounceDelay: 250,
 };
 
-const {addEventListener, removeEventListener, passiveOptions} = helpers;
+const { addEventListener, removeEventListener, passiveOptions } = helpers;
 
-const mergeOptionsWithDefault = (obj) => {
-    return Object.assign({}, defaultEventOptions, obj);
-};
+const mergeOptionsWithDefault = obj => Object.assign({}, defaultEventOptions, obj);
 
 const getEventsArgs = (eventName, cb, opts) => {
     const args = [eventName, cb];
@@ -23,6 +21,8 @@ const getEventsArgs = (eventName, cb, opts) => {
     return args;
 };
 
+/* eslint-disable */
+// This function has to be without arrows to make sure we retain the scope the debouce
 // Inspired from http://davidwalsh.name/javascript-debounce-function
 const debounceFn = function (cb, delay) {
     let timeout;
@@ -37,6 +37,7 @@ const debounceFn = function (cb, delay) {
         }, delay);
     };
 };
+/* eslint-enable */
 
 const switchOn = (target, eventName, cb, opts = {}) => {
     // Only supports modern browsers Sorry IE10- users
@@ -45,22 +46,22 @@ const switchOn = (target, eventName, cb, opts = {}) => {
             debounce = false,
             debounceDelay,
         } = opts;
+        /* eslint-disable */
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target
-            .addEventListener
-            .apply(target, getEventsArgs(eventName, debounce
+        target.addEventListener.apply(target, getEventsArgs(eventName, debounce
                 ? debounceFn(cb, debounceDelay)
                 : cb, opts));
+        /* eslint-enable */
     }
 };
 
 const switchOff = (target, eventName, cb, opts = {}) => {
     // Only supports modern browsers Sorry IE10- users
     if (removeEventListener) {
+        /* eslint-disable */
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
-        target
-            .removeEventListener
-            .apply(target, getEventsArgs(eventName, cb, opts));
+        target.removeEventListener.apply(target, getEventsArgs(eventName, cb, opts));
+        /* eslint-enable */
     }
 };
 
@@ -83,12 +84,10 @@ class AttachHandler extends Component {
         this.addEventListener();
     };
 
-    shouldComponentUpdate = (nextProps) => {
-        return shallowCompare({
-            props: this.props,
-            state: this.state,
-        }, nextProps, this.state);
-    };
+    shouldComponentUpdate = nextProps => shallowCompare({
+        props: this.props,
+        state: this.state,
+    }, nextProps, this.state);
 
     componentWillUpdate = () => {
         this.addEventListener();
@@ -102,16 +101,11 @@ class AttachHandler extends Component {
         this.removeEventListener();
     };
 
-    addEventListener = () => {
-        this.setListeners(switchOn);
-    };
-
-    removeEventListener = () => {
-        this.setListeners(switchOff);
-    };
-
     setListeners = (switchOnOff) => {
-        const {target, events} = this.props;
+        const {
+            target,
+            events,
+        } = this.props;
 
         if (target) {
             let element;
@@ -132,11 +126,10 @@ class AttachHandler extends Component {
                     if (!isObject && !isFunction) {
                         return;
                     }
-                    let eventHandler,
-                        options;
+                    let eventHandler;
+                    let options;
 
                     if (isObject) {
-
                         const {
                             handler = null,
                             opts = {},
@@ -159,9 +152,15 @@ class AttachHandler extends Component {
         }
     };
 
-    render = () => {
-        return this.props.children || null;
+    addEventListener = () => {
+        this.setListeners(switchOn);
     };
+
+    removeEventListener = () => {
+        this.setListeners(switchOff);
+    };
+
+    render = () => this.props.children || null;
 }
 
 export default AttachHandler;

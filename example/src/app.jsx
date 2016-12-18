@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+/* eslint no-console: 0 */
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import AttachHandler from '../../lib/AttachHandler';
@@ -11,26 +12,23 @@ class App extends Component {
 
     iamhere = 'Something is here';
 
-    render = () => {
-        return (
-            <section
-                className="app">
-                <AttachHandler
-                    target="window"
-                    events={{
-                        resize: {
-                            handler: this.handleMouseMove,
-                            opts: {
-                                debounce: true,
-                                debounceDelay: 100,
-                            }
+    render = () => (
+        <section className="app">
+            <AttachHandler
+                target="window"
+                events={{
+                    resize: {
+                        handler: this.handleMouseMove,
+                        opts: {
+                            debounce: true,
+                            debounceDelay: 100,
                         },
-                        scroll: this.handleMouseMove,
-                    }}
-                    />
-            </section>
-        );
-    }
+                    },
+                    scroll: this.handleMouseMove,
+                }}
+            />
+        </section>
+    );
 }
 
 ReactDOM.render(<App />, document.getElementById('container'));
