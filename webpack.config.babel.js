@@ -7,7 +7,7 @@ import SystemBellPlugin from 'system-bell-webpack-plugin';
 import CleanWebpackPlugin from 'clean-webpack-plugin';
 import merge from 'webpack-merge';
 
-const pkh = require('./package.json');
+const pkg = require('./package.json');
 
 const TARGET = process.env.npm_lifecycle_event || '';
 const ROOT_PATH = __dirname;
@@ -15,25 +15,25 @@ const config = {
     paths: {
         build: path.join(ROOT_PATH, 'build'),
         src: path.join(ROOT_PATH, 'src'),
-        example: path.join(ROOT_PATH, 'example'),
+        example: path.join(ROOT_PATH, 'example')
     },
     filename: `${pkg.name}.js`,
-    library: pnk.moduleName,
+    library: pkg.moduleName,
 };
 
 process.env.BASE_ENV = TARGET;
 
 const common = {
     resolve: {
-        extensions: ['', 'js', 'jsx'],
+        extensions: ['', '.js', '.jsx', '.css'],
     },
     module: {
-        preLoader: [
+        preLoaders: [
             {
                 test: /\.jsx?$/,
                 loaders: ['eslint'],
                 include: [
-                    config.paths.build,
+                    config.paths.src,
                     config.paths.example,
                 ],
             },
@@ -45,11 +45,11 @@ const common = {
             }, {
                 test: /\.json$/,
                 loader: 'json',
-                include: path.join(ROOT_PATH, 'package.json'),
+                include: './package.json',
             },
         ],
         plugins: [
-            new SystemBellPlugin()
+            new SystemBellPlugin(),
         ],
     },
 };
@@ -57,7 +57,7 @@ const common = {
 const siteCommon = {
     plugins: [
         new HtmlWebpackPlugin({
-            template: require('html-webpack-template'), //eslint-disable-line global-require
+            template: require('html-webpack-template'), // eslint-disable-line global-require
             inject: false,
             mobile: true,
             title: pkg.name,
@@ -66,6 +66,7 @@ const siteCommon = {
         new webpack.DefinePlugin({
             NAME: JSON.stringify(pkg.name),
             VERSION: JSON.stringify(pkg.version),
+            USER: JSON.stringify(pkg.user),
         }),
     ],
 };
@@ -74,8 +75,11 @@ if (TARGET === 'start') {
     module.exports = merge(common, siteCommon, {
         devtool: 'eval-source-map',
         entry: {
-            example: [config.pats.example],
+            example: [config.paths.example],
         },
+        /*resolve: {
+            modulesDirectories: [path.resolve(__dirname, 'node_modules')]
+        },*/
         plugins: [
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': '"development"',
@@ -89,8 +93,12 @@ if (TARGET === 'start') {
                     loaders: ['babel?cacheDirectory'],
                     include: [
                         config.paths.example,
-                        config.path.src,
+                        config.paths.src,
                     ],
+                },
+                {
+                    test: /.css$/,
+                    loaders: ['style', 'css'],
                 },
             ],
         },
@@ -99,8 +107,8 @@ if (TARGET === 'start') {
             hot: true,
             inline: true,
             progress: true,
-            host: process.env.HOST || '0.0.0.0',
-            port: process.env.PORT || 4002,
+            host: process.env.HOST || pkg.devServer.host,
+            port: process.env.PORT || pkg.devServer.port,
             stats: 'error-only',
         },
     });
@@ -146,7 +154,7 @@ if (TARGET === 'gh-pages' || TARGET === 'gh-pages:stats') {
                     loaders: ['babel'],
                     include: [
                         config.paths.example,
-                        config.path.src,
+                        config.paths.src,
                     ],
                 },
             ],
@@ -157,7 +165,7 @@ if (TARGET === 'gh-pages' || TARGET === 'gh-pages:stats') {
 const buildCommon = {
     devtool: 'source-map',
     output: {
-        path: configs.paths.build,
+        path: config.paths.build,
         libraryTarget: 'umd',
         library: config.library,
     },
@@ -175,7 +183,7 @@ const buildCommon = {
             {
                 test: /.jsx?$/,
                 loaders: ['babel'],
-                include: config.path.src,
+                include: config.paths.src,
             },
         ],
     },
