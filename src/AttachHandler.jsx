@@ -6,7 +6,9 @@ const defaultEventOptions = {
     capture: false,
     passive: false,
     debounce: false,
+    throttle: false,
     debounceDelay: 250,
+    throttleDelay: 250,
 };
 
 const {addEventListener, removeEventListener, passiveOptions} = helpers;
@@ -37,20 +39,80 @@ const debounceFn = function (cb, delay) {
         }, delay);
     };
 };
+// Inspired from underscore throttle https://github.com/jashkenas/underscore/blob/master/underscore.js
+const throttleFn = function (cb, delay, options = {}) {
+    let context;
+    let args;
+    let result;
+
+    let timeout = null;
+    let previous = 0;
+
+    const {
+        leading = true,
+        trailing = false,
+    } = options;
+
+    const later = function() {
+        previous = !leading ? 0 : Date.now();
+        timeout = null;
+        result = cb.apply(context, args);
+        if (!timeout) {
+            context = args = null;
+        }
+    };
+
+    return function() {
+        context = this;
+        args = arguments;
+
+        const now = Date.now();
+        if (!previous && !leading) {
+            previous = now;
+        }
+
+        const remaining = wait - (now - previous);
+
+        if (remaining <= 0 || remaining > wait) {
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+
+            previous = now;
+            result = cb.apply(context, args);
+
+            if (!timeout) {
+                context = args = null;
+            }
+        } else if (!timeout && trailing) {
+            timeout = setTimeout(later, remaining);
+        }
+        return result;
+    };
+};
 
 const switchOn = (target, eventName, cb, opts = {}) => {
     // Only supports modern browsers Sorry IE10- users
     if (addEventListener) {
         const {
             debounce = false,
+            throttle = false,
             debounceDelay,
+            throttleDelay,
         } = opts;
+
+        let handler = cb;
+        if (debounce) {
+            handler = debounceFn(cb, debounceDelay);
+        } else if (throttle) {
+            handler = throttleFn(cb, throttleDelay);
+        }
+
         // http://stackoverflow.com/questions/2891096/addeventlistener-using-apply
         target
             .addEventListener
-            .apply(target, getEventsArgs(eventName, debounce
-                ? debounceFn(cb, debounceDelay)
-                : cb, opts));
+            .apply(target, getEventsArgs(eventName, handler, opts));
     }
 };
 
