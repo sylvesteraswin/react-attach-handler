@@ -112,6 +112,7 @@
   "precommit": [],
   "dependencies": {
     "classnames": "^2.2.5",
+    "prop-types": "^15.6.0",
     "react-addons-shallow-compare": "^15.4.1"
   }
 }
