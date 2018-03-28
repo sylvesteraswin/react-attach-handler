@@ -12,7 +12,7 @@ const defaultEventOptions = {
     throttleDelay: 250,
 };
 
-const {addEventListener, removeEventListener, passiveOptions} = helpers;
+const {addEventListener, removeEventListener, passiveOptions, canUseDom} = helpers;
 
 const mergeOptionsWithDefault = (obj) => {
     return Object.assign({}, defaultEventOptions, obj);
@@ -154,11 +154,11 @@ class AttachHandler extends Component {
     };
 
     componentWillUpdate = () => {
-        this.addEventListener();
+        canUseDom && this.addEventListener();
     };
 
     componentDidUpdate = () => {
-        this.addEventListener();
+        canUseDom && this.addEventListener();
     };
 
     componentWillUnmount = () => {

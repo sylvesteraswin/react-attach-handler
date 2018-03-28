@@ -3,8 +3,8 @@
   "moduleName": "AttachHandler",
   "version": "0.2.0",
   "description": "React attach event handlers to targets.",
-  "main": "build/react-attach-handler",
-  "browser": "build/react-attach-handler",
+  "main": "lib/AttachHandler.js",
+  "browser": "lib/AttachHandler.js",
   "devServer": {
     "host": "0.0.0.0",
     "port": 4002,
@@ -113,6 +113,7 @@
   "dependencies": {
     "classnames": "^2.2.5",
     "prop-types": "^15.6.1",
-    "react-addons-shallow-compare": "^15.4.1"
+    "react-addons-shallow-compare": "^15.4.1",
+    "react-attach-handler": "0.2.0"
   }
 }
